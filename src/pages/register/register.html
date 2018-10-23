@@ -1,0 +1,160 @@
+<ion-header transparent>
+    <ion-navbar transparent>
+        <ion-title>
+            Register
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding class="background">
+    <ion-card *ngIf="step == 1" style="border-radius: 15px">
+        <form [formGroup]="signUpFirstForm">
+            <ion-list>
+                <ion-item [class.invalid2]="!signUpFirstForm.controls.name.valid && (signUpFirstForm.controls.name.dirty || submitAttempt)">
+                    <ion-label floating>Name</ion-label>
+                    <ion-input [(ngModel)]="account.name" formControlName="name" [class.invalid2]="!signUpFirstForm.controls.name.valid && (signUpFirstForm.controls.name.dirty || submitAttempt)"
+                        type="text"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>Surname</ion-label>
+                    <ion-input [(ngModel)]="account.surname" formControlName="surname" [class.invalid]="!signUpFirstForm.controls.surname.valid && (signUpFirstForm.controls.surname.dirty || submitAttempt)"
+                        type="text"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>Cell Phone</ion-label>
+                    <ion-input [(ngModel)]="account.cellPhone" formControlName="cellPhone" [class.invalid]="!signUpFirstForm.controls.cellPhone.valid && (signUpFirstForm.controls.cellPhone.dirty || submitAttempt)"
+                        type="number"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>Email</ion-label>
+                    <ion-input [(ngModel)]="account.email" formControlName="email" [class.invalid]="!signUpFirstForm.controls.email.valid && (signUpFirstForm.controls.email.dirty || submitAttempt)"
+                        type="email"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>Password</ion-label>
+                    <ion-input [(ngModel)]="account.password" formControlName="password" [class.invalid]="!signUpFirstForm.controls.password.valid && (signUpFirstForm.controls.password.dirty || submitAttempt)"
+                        type="password"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>Confirm Password</ion-label>
+                    <ion-input [(ngModel)]="account.confirmPassword" formControlName="confirmPassword" [class.invalid]="!signUpFirstForm.controls.confirmPassword.valid && (signUpFirstForm.controls.confirmPassword.dirty || submitAttempt)"
+                        type="password"></ion-input>
+                </ion-item>
+                <div padding>
+                    <button ion-button block class="btn" (click)="next()">Next</button>
+                    <p *ngIf="showPasswordError" style="color: red;font-size: xx-small;text-align: center;"> Passwords don't match</p>
+                </div>
+            </ion-list>
+        </form>
+    </ion-card>
+
+    <ion-card *ngIf="step == 2" style="border-radius: 15px">
+        <form [formGroup]="signUpSecondForm">
+            <ion-list>
+                <ion-item>
+                    <div class="autocomplete">
+                        <ion-searchbar [(ngModel)]="referredBy" formControlName="referredBy" [class.invalid]="!signUpSecondForm.controls.referredBy.valid && (signUpSecondForm.controls.referredBy.dirty || secondSubmitAttempt)" (ionFocus)="addFocus()" (ionInput)="search()" (ionBlur)="removeFocus()"
+                            debounce=500>
+                            </ion-searchbar>
+                            <ion-list>
+                                <ion-item style="background-color:#f8f8f8;" *ngFor="let person of peoples" (click)="addNote(person)">
+                                    <span style="color:seagreen">{{person.name}} {{person.surname}} - {{person.membershipNo}}</span>
+                                </ion-item>
+                            </ion-list>
+                    </div>
+                </ion-item>
+               <!-- <ion-item>
+    <ion-label>Country</ion-label>
+    <ion-select [(ngModel)]="account.country" formControlName="country">
+      <ion-option value="Afghanistan +93">Afghanistan</ion-option>
+      <ion-option value="Albania +355">Albania</ion-option>
+      <ion-option value="Algeria +213">Algeria</ion-option>
+      <ion-option value="American Samoa	+1684">American Samoa</ion-option>
+      <ion-option value="Andorra +376">Andorra</ion-option>
+      <ion-option value="Angola	+244">Angola</ion-option>
+      <ion-option value="Anguilla +1264">Andorra</ion-option>
+            <ion-option value="Antarctica +672">Antarctica</ion-option>
+            <ion-option value="Antigua + 1268">Antigua</ion-option>
+            <ion-option value="Barbuda +1268">Barbuda</ion-option>
+            <ion-option value="Argentina +54">Argentina</ion-option>
+            <ion-option value="Armenia +374">Armenia</ion-option>
+            <ion-option value="Aruba +297">Aruba</ion-option>
+            <ion-option value="Australia +61">Australia</ion-option>
+            <ion-option value="Austria +43">Austria</ion-option>
+            <ion-option value="Azerbaijan +994">Azerbaijan</ion-option>
+            <ion-option value="Bahamas +1242">Bahamas</ion-option>
+            <ion-option value="Bangladesh +880">Bangladesh</ion-option>
+            <ion-option value="Barbados +1246">Barbados</ion-option>
+            <ion-option value="Bahrain +973">Bahrain</ion-option>
+            <ion-option value="Belarus +375">Belarus</ion-option>
+            <ion-option value="Belgium +32">Belgium</ion-option>
+            <ion-option value="Belize +501">Belize</ion-option>
+            <ion-option value="Benin +229">Benin</ion-option>
+            <ion-option value="Bermuda +1441" > Bermuda</ion-option>
+            <ion-option value= "Bhutan +975" > Bhutan </ion-option >
+            <ion-option value= "Bolivia +591" > Bolivia </ion-option >
+            <ion-option value= "Bosnia and Herzegovina +387" > Bosnia and Herzegovina </ion-option >
+            <ion-option value= "Botswana +267" > Botswana </ion-option>
+            <ion-option value= "Brazil +55"> Brazil </ion-option>
+            <ion-option value= "British Indian Ocean Territory +246" > British Indian Ocean Territory </ion-option >
+            <ion-option value= "British Virgin Islands +1284" > British Virgin Islands </ion-option >
+            <ion-option value= "Brunei +673" > Brunei </ion-option >
+            <ion-option value= "Bulgaria +359" > Bulgaria </ion-option >
+            <ion-option value= "Burkina Faso +226" > Burkina Faso </ion-option >
+            <ion-option value= "Burundi +257" > Burundi </ion-option >
+            <ion-option value= "Cambodia +855" > Cambodia </ion-option >
+            <ion-option value= "Cameroon +237" > Cameroon </ion-option >
+            <ion-option value= "Canada +1" > Canada </ion-option >
+            <ion-option value= "Cape Verde +238" > Cape Verde </ion-option >
+            <ion-option value= "Cayman Islands +1345" > Cayman Islands </ion-option >
+            <ion-option value= "Central African Republic +236" > Central African Republic </ion-option >
+            <ion-option value= "Chad +235" > Chad </ion-option >
+            <ion-option value= "Chile +56" > Chile </ion-option >
+            <ion-option value= "China +86" > China </ion-option >
+            <ion-option value= "Christmas Island +61" > Christmas Island </ion-option >
+            <ion-option value= "Cocos Islands +61" > Cocos Islands </ion-option >
+            <ion-option value= "Colombia +57" > Colombia </ion-option >
+            <ion-option value= "Comoros +269" > Comoros </ion-option >
+            <ion-option value= "Cook Islands +682" > Cook Islands </ion-option >
+            <ion-option value= "Costa Rica +506" > Costa Rica </ion-option >
+            <ion-option value= "Croatia +385" > Croatia </ion-option >
+            <ion-option value= "Cuba +53" > Cuba </ion-option >
+            <ion-option value= "Curacao +599" > Curacao </ion-option >
+            <ion-option value= "Cyprus +357">Cyprus </ion-option >
+            <ion-option value= "Czech Republic +420">Czech Republic </ion-option >
+            <ion-option value= "Democratic Republic of the Congo +243">Democratic Republic of the Congo </ion-option >
+            <ion-option value= "South Africa +27">South Africa </ion-option >
+            
+    </ion-select>
+  </ion-item>-->
+                <ion-item>
+                    <ion-label floating>Address</ion-label>
+                    <ion-input [(ngModel)]="account.address" formControlName="address" [class.invalid]="!signUpSecondForm.controls.address.valid && (signUpSecondForm.controls.address.dirty || secondSubmitAttempt)"
+                        type="text"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>ID Number</ion-label>
+                    <ion-input [(ngModel)]="account.IDNumber" formControlName="IDNumber" [class.invalid]="!signUpSecondForm.controls.IDNumber.valid && (signUpSecondForm.controls.IDNumber.dirty || secondSubmitAttempt)"
+                        type="text"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>Bank Name</ion-label>
+                    <ion-input [(ngModel)]="account.bankName" formControlName="bankName" [class.invalid]="!signUpSecondForm.controls.bankName.valid && (signUpSecondForm.controls.bankName.dirty || secondSubmitAttempt)"
+                        type="text"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>Account Number</ion-label>
+                    <ion-input [(ngModel)]="account.accountNumber" formControlName="accountNumber" [class.invalid]="!signUpSecondForm.controls.accountNumber.valid && (signUpSecondForm.controls.accountNumber.dirty || secondSubmitAttempt)"
+                        type="number"></ion-input>
+                </ion-item>
+                <div padding>
+                    <button ion-button block class="btn" (click)="signUp()">Sign Up</button>
+                    <p *ngIf="showError" style="color: red;font-size: xx-small"> {{message}} </p>
+                </div>
+                <div padding style="text-align: center;;margin-top: -15px;margin-bottom: 10px;">
+                    <label clear small block class="login-links" (click)="back()">Previous</label>
+                </div>
+            </ion-list>
+        </form>
+    </ion-card>
+</ion-content>

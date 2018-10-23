@@ -1,18 +1,64 @@
-<ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+<ion-header transparent>
+    <ion-navbar transparent>
+       <button ion-button menuToggle icon-only>
+      <ion-icon name='menu'></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
+        <ion-title style="margin-left: 30%;">
+            <img width="50" height="50" src="assets/imgs/teras_logo.png">
+        </ion-title>
+       <ion-buttons end>
+      <button ion-button icon-only (click)="placeAnOrder()" color="royal">
+        <ion-icon name="add"><label style="font-size: 12px"> Order</label></ion-icon>
+      </button>
+    </ion-buttons>
+    </ion-navbar>
 </ion-header>
+<ion-content class="background" padding> 
+    <ion-card style="border-radius: 65px 0px 0px;margin-top: 0px;">
+        <ion-card-header class="card-header">
+            Orders
+        </ion-card-header>
+        <ion-card-content style="float: right">
+            <ion-spinner style="margin-left: -30px;margin-bottom: -19px;" *ngIf="loadingOrders"></ion-spinner>
+            <label (click)="viewOrders('Pending Payment')"> <b>{{numOfPendingPaymentOrders}}</b> Pending Payment</label><br>
+            <label (click)="viewOrders('Awaiting Approval')"><b>{{numOfAwiatingApprovelOrders}}</b> Awaiting Approval</label><br>
+        </ion-card-content>
+        <ion-row>
+            <ion-col>
+                <button class="icon-btn" style="margin-left: -13px;" (click)="viewOrders('Order History')" ion-button icon-start clear small>
+                    <ion-icon name="basket"></ion-icon>                   
+                    <div style="margin-top: 5px;">Approved Orders</div>
+                </button>
+            </ion-col>
+        </ion-row>
+    </ion-card>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
-
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+    <ion-card style="border-radius: 0px 0px 60px 0px;">
+        <ion-card-header>
+            Commission 
+        </ion-card-header>
+        <ion-card-content style="float: right">
+             
+        </ion-card-content>
+        <ion-row>
+            <ion-col small>
+                <ion-icon name="star" color="yellow" style="color:yellow"></ion-icon>
+            <span style="color: green"><b>R {{myCommision}} </b></span>
+            <ion-spinner style="margin-bottom: -5px;" *ngIf="loadingPoints"></ion-spinner>  Commision<br>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+    <ion-card style="border-radius: 5px 45px 5px 5px;">
+        <ion-card-header>
+            <ion-icon name="people" color="primary"></ion-icon>
+            My People
+        </ion-card-header>
+        <ion-card-content>
+            <ion-spinner *ngIf="usersUnderMe.length <= 0 && loading"></ion-spinner>
+            <ion-item-group *ngIf="usersUnderMe.length > 0">
+                <ion-item-divider *ngFor="let people of usersUnderMe" [value]="people.name"><ion-label>{{people.name + " " + people.surname}}</ion-label><ion-toggle disabled [checked]="people.isActive"></ion-toggle></ion-item-divider>
+            </ion-item-group>
+            <p *ngIf="usersUnderMe.length <= 0 && !loading">no users</p>
+        </ion-card-content>
+    </ion-card>
 </ion-content>

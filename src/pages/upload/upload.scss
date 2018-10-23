@@ -1,0 +1,19 @@
+page-upload {
+ .background{
+    background-image: url('../assets/imgs/login-bg1.jpg');
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    position: fixed;
+    background-size: cover;
+    text-align: center
+}
+.submitbtn{
+    color: #FFFFFF;
+    background-image: none;
+    background-color: #32CD32;
+    border-color: #008000;
+    height: 30px;
+    border-radius: 5px;
+}
+}

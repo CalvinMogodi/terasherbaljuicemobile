@@ -6,8 +6,21 @@
   </ion-header>
 
   <ion-content>
-    <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+       <ion-row style="background-color:#f8f8f8;">
+   <ion-col col-12>
+       <ion-avatar item-start>
+         <img height="100" width="100" style="margin-left: 30%;border-radius: 50%;" src="{{profilePicURL}}" />
+       </ion-avatar>
+   </ion-col>  
+   </ion-row>
+     <ion-row style="background-color:#f8f8f8;">
+   <ion-col col-12 style="text-align: center">
+     <span style="color:seagreen">{{displayname}}</span>
+   </ion-col>
+</ion-row>
+    <ion-list>      
+      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)" class="menuButton">
+        <ion-icon name="{{p.icon}}" item-start></ion-icon>
         {{p.title}}
       </button>
     </ion-list>

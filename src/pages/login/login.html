@@ -1,0 +1,33 @@
+
+<ion-content padding class="login-background">
+   <img width="150" height="150" src="assets/imgs/teras_logo.png">
+  <ion-card style="border-radius: 15px">
+    <form [formGroup]="loginForm">
+      <ion-list padding>
+        <ion-item>
+          <ion-label floating>Email/ Cell Phone</ion-label>
+          <ion-input [(ngModel)]="user.email" autofill="off" name="email" formControlName="email" [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.dirty || submitAttempt)"
+            type="email"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Password</ion-label>
+          <ion-input [(ngModel)]="user.password" autofill="off" name="email" formControlName="password" [class.invalid]="!loginForm.controls.password.valid && (loginForm.controls.password.dirty || submitAttempt)"
+            type="password"></ion-input>
+        </ion-item>
+      </ion-list>
+      <div padding>
+        <small>By signing in, I agree to <span style="color: mediumblue;" (click)="termsandconditions()">terms and conditions</span></small>
+        <button ion-button block class="login-btn" (click)="signIn()">Sign In</button>
+        <p *ngIf="showError" style="color: red;font-size: xx-small"> invalid email or password. </p>
+      </div>
+      <ion-row style="margin-top: -15px;margin-bottom: 10px;">
+        <ion-col>
+          <label (click)="register()" clear small class="login-links">Register</label>
+        </ion-col>
+        <ion-col>
+          <label clear small class="login-links" (click)="forgotpassword()">Forgot Password?</label>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-card>
+</ion-content>

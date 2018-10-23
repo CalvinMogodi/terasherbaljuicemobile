@@ -1,0 +1,81 @@
+<!--
+  Generated template for the OrderdetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header transparent>
+  <ion-toolbar transparent>
+    <ion-title>
+      Order Details
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding class="background" >
+
+  <div class="progress">
+  <div class="step" [ngClass]="{'done':order.audit.pendingPaymentDone}">
+    <div class="step-progress"></div>
+    <div class="step-text" style="margin-top: -45px; margin-left: -30% !important">Pending Payment</div>
+    <div class="icon-wrapper">      
+      <svg class="icon icon-checkmark" viewBox="0 0 32 32"><path class="path1" d="M27 4l-15 15-7-7-5 5 12 12 20-20z"></path>  </svg>      
+    </div>
+  </div>
+  <div class="step" [ngClass]="{'done':order.audit.awaitingApprovalDone}">
+    <div class="step-progress"></div>
+    <div class="icon-wrapper">
+      <svg class="icon icon-checkmark" viewBox="0 0 32 32"><path class="path1" d="M27 4l-15 15-7-7-5 5 12 12 20-20z"></path>  </svg>
+      <div class="step-text">Awaiting Approval</div>
+    </div>
+  </div>
+  <div class="step" [ngClass]="{'done':order.audit.readyForDeliveryDone}"> 
+    <div class="step-progress"></div>
+     <div class="step-text" style="margin-top: -45px;">Ready For Delivery</div>  
+    <div class="icon-wrapper">
+      <svg class="icon icon-checkmark" viewBox="0 0 32 32"><path class="path1" d="M27 4l-15 15-7-7-5 5 12 12 20-20z"></path>  </svg>         
+    </div>
+  </div>
+  <div class="step" [ngClass]="{'done':order.audit.collectedByCourierDone}">
+    <div class="icon-wrapper">
+      <svg class="icon icon-checkmark" viewBox="0 0 32 32"><path class="path1" d="M27 4l-15 15-7-7-5 5 12 12 20-20z"></path>  </svg>
+      <div class="step-text" style="margin-left: -120% !important;">With Courier</div>      
+    </div>
+  </div>
+</div>
+<ion-card style="border-radius: 15px;margin-top: 17%;" padding>  
+  <button *ngIf="!order.uploadedPOP" (click)="openFileChooser()" ion-button full round style="background-color: #ffcc00;">Upload Proof of Payment</button>
+  <ion-item>
+    <h2>Order # {{order.orderNumber}}</h2>
+    <p>Order Date: {{dateStr}}</p>
+  </ion-item>
+  <ion-card-content>
+    <p>Delivery Method: {{order.deliveryMethod}}<br>
+       <label *ngIf="order.deliveryAddress != ''"> Delivery Address: {{order.deliveryAddress}}<br></label>
+        Payment Method: {{order.paymentMethod}}<br>
+        Payment Reference: {{order.reference}}<br>
+        status: {{order.status}}<br>
+    </p>
+  </ion-card-content>
+
+  <ion-row>
+    <ion-col>
+    </ion-col>
+    <ion-col>
+    </ion-col>
+    <ion-col center text-center>
+      <ion-note>
+       Qty: {{order.quantity}}
+      </ion-note>
+    </ion-col>
+  </ion-row>
+
+</ion-card>
+</ion-content>
