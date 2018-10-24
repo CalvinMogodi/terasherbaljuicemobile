@@ -29,7 +29,6 @@ export class LoginPage {
     password: '',
   }
   public fireAuth: any;
-  public database: any;
   constructor(public afAuth: AngularFireAuth,public db: AngularFireDatabase, private storage: Storage, public userService: UserserviceProvider, 
       public navCtrl: NavController, public formBuilder: FormBuilder,
        public toastCtrl: ToastController, public loadingCtrl: LoadingController,
@@ -42,7 +41,6 @@ export class LoginPage {
     });
 
     this.fireAuth = afAuth.auth;
-    this.database = db.database;
   }
 
   register() {
@@ -70,7 +68,7 @@ export class LoginPage {
       this.loader.present();
 
       if(this.isANumber(this.user.email)){
-        var refForOrders = this.database.ref();
+        var refForOrders = this.db.database.ref();
         refForOrders.child('users').orderByChild('cellPhone').equalTo(this.user.email).once('value', snapshot => {
             var result = snapshot.val();
             if(result != null){
@@ -89,36 +87,37 @@ export class LoginPage {
   loginUser(username, password){
     this.userService.loginUser(username, password).then(authData => {
         //get data from db
-        this.database.ref('users/' + authData.uid).once('value', (snapshot) =>{
+        this.db.database.ref('users/' + authData.user.uid).once('value', (snapshot) =>{
             //return snapshot.val() || 'Anoynymous';
             var user = snapshot.val();
-            this.dbUser = user;
-            this.storage.set("id", authData.uid);
-            this.userService.setUid(authData.uid);
-            var test = this.userService.getUid();
-            
-            if(user.isActive)
-            {
+            if(user != null){
+              this.dbUser = user;
+              this.storage.set("id", authData.uid);
+              this.userService.setUid(authData.uid);
+              var test = this.userService.getUid();
+              
+              if(user.isActive)
+              {
+                  this.loader.dismiss();
+                  this.navCtrl.setRoot(HomePage, {
+                      userData: test
+                  });
+              }
+              else if(user.uploadedPOP){
                 this.loader.dismiss();
-                this.navCtrl.setRoot(HomePage, {
-                    userData: test
-                });
-            }
-            else if(user.uploadedPOP){
-              this.loader.dismiss();
-                this.navCtrl.push(AwaitingApprovalPage, {
-                    userData: authData.uid
-                });              
-            }
-            else
-            {
-               this.loader.dismiss();
-               this.navCtrl.push(UploadPage, {
-                    userData: authData.uid,
-                    paymentReference: this.dbUser.paymentReference
-                });                
-            }
-
+                  this.navCtrl.push(AwaitingApprovalPage, {
+                      userData: authData.uid
+                  });              
+              }
+              else
+              {
+                 this.loader.dismiss();
+                 this.navCtrl.push(UploadPage, {
+                      userData: authData.uid,
+                      paymentReference: this.dbUser.paymentReference
+                  });                
+              }
+            }     
         });
 
       }, error => {
