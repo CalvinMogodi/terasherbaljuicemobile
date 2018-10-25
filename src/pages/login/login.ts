@@ -92,8 +92,8 @@ export class LoginPage {
             var user = snapshot.val();
             if(user != null){
               this.dbUser = user;
-              this.storage.set("id", authData.uid);
-              this.userService.setUid(authData.uid);
+              this.storage.set("id", authData.user.uid);
+              this.userService.setUid(authData.user.uid);
               var test = this.userService.getUid();
               
               if(user.isActive)
@@ -105,15 +105,15 @@ export class LoginPage {
               }
               else if(user.uploadedPOP){
                 this.loader.dismiss();
-                  this.navCtrl.push(AwaitingApprovalPage, {
-                      userData: authData.uid
+                  this.navCtrl.setRoot(AwaitingApprovalPage, {
+                      userData: authData.user.uid
                   });              
               }
               else
               {
                  this.loader.dismiss();
-                 this.navCtrl.push(UploadPage, {
-                      userData: authData.uid,
+                 this.navCtrl.setRoot(UploadPage, {
+                      userData: authData.user.uid,
                       paymentReference: this.dbUser.paymentReference
                   });                
               }

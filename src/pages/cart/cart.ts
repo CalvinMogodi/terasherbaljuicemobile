@@ -353,7 +353,7 @@ export class CartPage {
 
                 this.cardDetails.quantity = this.order.quantity;
 
-                this.http.post('http://localhost/api/charge', JSON.stringify(this.cardDetails), options)
+                this.http.post('http://laravel.site:7000/api/cardPaymenttest', JSON.stringify(this.cardDetails), options)
                     .subscribe(data => {
                         var breakeHere = "";
                     });

@@ -21,43 +21,48 @@ export class MyApp {
   id: any;
   userId: any;
   public database: any;
-  pages: Array<{title: string, component: any, icon: string, isActive: boolean}>;
-  
-  constructor(public afStorage: AngularFireStorage,public afAuth: AngularFireAuth,public db: AngularFireDatabase, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public events: Events) {
-      events.subscribe("gotId", (uid)=>{
-          this.id = uid;
+  pages: Array<{ title: string, component: any, icon: string, isActive: boolean }>;
 
-      });
-    this.initializeApp();  
-    
+  constructor(public afStorage: AngularFireStorage, public afAuth: AngularFireAuth, public db: AngularFireDatabase, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public events: Events) {
+    events.subscribe("gotId", (uid) => {
+      this.id = uid;
+
+    });
+    this.initializeApp();
+
     var that = this;
     this.database = db;
-    afAuth.auth.onAuthStateChanged( user => {
-      if(user){          
-          this.userId = user.uid;
-          this.db.database.ref().child('users/' + user.uid).once('value', (snapshot)=>{
-            var user = snapshot.val();
-            if(user != null){
-              if(user.uploadedProfileImage){
-              let storageRef = afStorage.storage.ref();
-              var starsRef = storageRef.child('profileImages' + user.uid);        
-              starsRef.getDownloadURL().then( url => {
-                    this.profilePicURL = url;
+    afAuth.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.userId = user.uid;
+        this.db.database.ref().child('users/' + user.uid).once('value', (snapshot) => {
+          var user = snapshot.val();
+          if (user != null) {
+            if (user.isActive) {
+              user.uid = snapshot.key;
+              if (user.uploadedProfileImage) {
+                let storageRef = afStorage.storage.ref();
+                snapshot.key
+                var starsRef = storageRef.child('profileImages/' + user.uid);
+                starsRef.getDownloadURL().then(url => {
+                  this.profilePicURL = url;
                 });
+              }
             }
-            }            
-          });
-          that.rootPage = HomePage;
-        this.nav.setRoot(HomePage,{userData: user.uid});       
+          }
+        });
+        // that.rootPage = HomePage;
+        // this.nav.setRoot(HomePage,{userData: user.uid});   
+
       }
-      else{
+      else {
         that.rootPage = LoginPage;
         this.nav.setRoot(LoginPage);
       }
     })
     that.rootPage = LoginPage;
     // used for an example of ngFor and navigation
-    this.pages = [     
+    this.pages = [
       { title: 'Home', component: HomePage, icon: 'home', isActive: false },
       { title: 'Profile', component: ProfilePage, icon: 'person', isActive: true },
       { title: 'Log Out', component: LoginPage, icon: 'lock', isActive: false },
@@ -75,19 +80,18 @@ export class MyApp {
   }
 
   openPage(page) {
-    if(page.title == 'Profile')
-    {
+    if (page.title == 'Profile') {
       this.nav.push(page.component, {
         profileId: this.userId
       });
-    }else{
-      if(page.title == 'Log Out'){
-          this.afAuth.auth.signOut();
+    } else {
+      if (page.title == 'Log Out') {
+        this.afAuth.auth.signOut();
       }
       this.nav.setRoot(page.component, {
-          userData: this.userId
+        userData: this.userId
       });
     }
-    
+
   }
 }

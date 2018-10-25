@@ -194,7 +194,7 @@ export class RegisterPage {
             membershipNo: this.account.membershipNo
         }
         var jsonObject = JSON.stringify(sms);
-        this.http.post('http://localhost:7777/api/sms/signupsms', jsonObject, options)
+        this.http.post('http://terasherbaljuice.dedicated.co.za/api/sms/signupsms', jsonObject, options)
             .subscribe(data => {
                 var breakeHere = "";
             });
