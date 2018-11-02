@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, Platform, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { UserserviceProvider } from '../../providers/userservice/userservice';
 import { ToastController } from 'ionic-angular';
@@ -7,7 +7,7 @@ import { HomePage } from '../home/home';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { InAppBrowser, InAppBrowserOptions } from "@ionic-native/in-app-browser";
-import {CardpaymentPage} from '../cardpayment/cardpayment'
+import { CardpaymentPage } from '../cardpayment/cardpayment'
 //declare var Stripe;
 //declare var TCO;
 /**
@@ -99,7 +99,7 @@ export class CartPage {
     public unitsBoughtThisMonth = 0;
     public price: 0;
 
-    constructor(private inAppBrowser: InAppBrowser,public db: AngularFireDatabase, private storage: Storage, public navCtrl: NavController, public navParams: NavParams, public http: Http, public userService: UserserviceProvider, public toast: ToastController) {
+    constructor(private inAppBrowser: InAppBrowser, public db: AngularFireDatabase, public platform: Platform,private storage: Storage, public navCtrl: NavController, public navParams: NavParams, public http: Http, public userService: UserserviceProvider, public toast: ToastController) {
 
         this.order.userId = navParams.get('userData5');
         this.userId = navParams.get('userData5');
@@ -239,7 +239,7 @@ export class CartPage {
         //this.card = elements.create('card', { style: style });
         //this.card.mount("#card-element");
 
-      
+
         var form = document.getElementById('payment-form');
         form.addEventListener('submit', event => {
             event.preventDefault();
@@ -319,20 +319,46 @@ export class CartPage {
             this.order.orderNumber = newTotal;
             var timestamp = this.dateToTimestamp(new Date().toString());
             this.order.createdDate = timestamp;
-            newOrder.set(this.order, done => {
-                let url = "http://teraspayment.epizy.com/index.php?payGateID=" + 1025357100018 + "&amount=" + this.priceTotal + "&email=" + this.user.email + "&reference=" + this.order.reference;
-                const optionss: InAppBrowserOptions = {
-                    zoom: 'no',
-                    location:'yes',
-                    toolbar:'no',
-                    clearcache: 'yes',                    
-                    clearsessioncache: 'yes',
-                    disallowoverscroll: 'yes',
-                    enableViewportScale: 'yes',                    
-                } 
-                const browser = this.inAppBrowser.create(url, '_self', optionss); 
-                browser.show();
+
+            let url = "http://teraspayment.epizy.com/index.php?payGateID=" + 1025357100018 + "&amount=" + this.priceTotal + "&email=" + this.user.email + "&reference=" + this.order.reference;
+            const optionss: InAppBrowserOptions = {
+                zoom: 'no',
+                clearcache: 'yes',
+                clearsessioncache: 'yes',
+                disallowoverscroll: 'yes',
+                enableViewportScale: 'yes',
+            }
+            const browser = this.inAppBrowser.create(url, '_self', optionss);
+            browser.show();
+            browser.on('exit').subscribe(event => {
+                newOrder.set(this.order, done => {
+                    this.updateOrderCount(this.order.orderNumber);
+                    //update points
+                    this.database.ref().child('users/' + this.userId).once('value', (snapshot) => {
+                        this.user = snapshot.val();
+
+                        this.user.points = this.user.points + (10 * this.order.quantity);
+                        this.database.ref().child('users/' + this.userId)
+                            .update(this.user);
+
+                    });
+
+                    let toast = this.toast.create({
+                        message: 'Order placed successfuly',
+                        duration: 3000,
+                        position: 'top'
+                    });
+
+                    toast.onDidDismiss(() => {
+                        this.navCtrl.setRoot(HomePage, { userData: this.order.userId })
+                    });
+
+                    toast.present();
+                });
+            }, err => {
+                console.error(err);
             });
+
         });
     }
 
@@ -349,7 +375,7 @@ export class CartPage {
 
 
     placeOrder() {
-       
+
         this.showDeliveryMethodError = false;
         this.showPaymentMethodError = false;
         if (this.order.paymentMethod == "") {
@@ -429,7 +455,7 @@ export class CartPage {
 
         }
         else if (this.order.paymentMethod == 'Card') {
-           this.pay();              
+            this.pay();
         }
         /* else if (this.order.paymentMethod == 'Points') {
  
