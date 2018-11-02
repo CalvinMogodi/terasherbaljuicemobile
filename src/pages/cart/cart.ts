@@ -311,6 +311,7 @@ export class CartPage {
         var newOrder = this.database.ref('orders').push();
         this.order.user = this.user.name + " " + this.user.surname;
         this.order.reference = text;
+        this.order.status = 'Awaiting Approval';
         this.order.createdDate = this.toTimestamp(new Date().toString());
         let orderCountRef = this.db.database.ref('staticData/orderCount');
         orderCountRef.orderByValue().once("value", total => {
@@ -323,11 +324,11 @@ export class CartPage {
                 const optionss: InAppBrowserOptions = {
                     zoom: 'no',
                     location:'yes',
-                    toolbar:'yes',
-                    clearcache: 'yes',
+                    toolbar:'no',
+                    clearcache: 'yes',                    
                     clearsessioncache: 'yes',
                     disallowoverscroll: 'yes',
-                    enableViewportScale: 'yes'
+                    enableViewportScale: 'yes',                    
                 } 
                 const browser = this.inAppBrowser.create(url, '_self', optionss); 
                 browser.show();
