@@ -13,5 +13,11 @@
 </ion-header>
 
 <ion-content padding>
-  <iframe width="100%" height="100%" src="https://secure.paygate.co.za/payweb3/process.trans" id="newsframe"></iframe>
+  <form action="https://secure.paygate.co.za/PayHost/redirect.trans" name="frmSubmit" id="frmSubmit" method="post" target="iframeID">
+    <input type='hidden' name='PAYGATE_ID' value='10011013800' />
+    <input type='hidden' name='PAY_REQUEST_ID' value='43DF55EE-B30E-295F-1BF2-20EF76E78BEE' />
+    <input type='hidden' name='CHECKSUM' value='580554987e830511864189533cec1a39' />
+    <input type="submit" name="submitBtn" value="Do Redirect" />
+    </form>
+    <iframe id="iframeID" scrollbar="auto" ></iframe> 
 </ion-content>

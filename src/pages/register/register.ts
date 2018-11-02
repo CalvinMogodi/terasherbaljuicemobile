@@ -173,7 +173,7 @@ export class RegisterPage {
                     position: 'bottom'
                 });
                 toast.present(toast);
-               // this.sendSMS();
+                this.sendSMS();
                 this.navCtrl.setRoot(LoginPage);
             }, error => {
                 loader.dismiss();

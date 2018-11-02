@@ -6,7 +6,8 @@ import { ToastController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AngularFireDatabase } from 'angularfire2/database';
-
+import { InAppBrowser, InAppBrowserOptions } from "@ionic-native/in-app-browser";
+import {CardpaymentPage} from '../cardpayment/cardpayment'
 //declare var Stripe;
 //declare var TCO;
 /**
@@ -98,7 +99,7 @@ export class CartPage {
     public unitsBoughtThisMonth = 0;
     public price: 0;
 
-    constructor(public db: AngularFireDatabase, private storage: Storage, public navCtrl: NavController, public navParams: NavParams, public http: Http, public userService: UserserviceProvider, public toast: ToastController) {
+    constructor(private inAppBrowser: InAppBrowser,public db: AngularFireDatabase, private storage: Storage, public navCtrl: NavController, public navParams: NavParams, public http: Http, public userService: UserserviceProvider, public toast: ToastController) {
 
         this.order.userId = navParams.get('userData5');
         this.userId = navParams.get('userData5');
@@ -213,26 +214,6 @@ export class CartPage {
                     expMonth: '11',
                     expYear: '20'
                 };
-            //// TCO.requestToken(this.success, this.failure, {
-            //   sellerId: '901381908',
-            //     publishableKey: 'E2D03A82-AAF0-4ED9-A82E-34D85AEE1099',
-            //    ccNo: '4000000000000002',
-            //    cvv: '123',
-            //    expMonth: '11',
-            //    expYear: '20'
-            // });
-
-            /*this.stripe.createToken(this.card).then(result => {
-              if (result.error) {
-                var errorElement = document.getElementById('card-errors');
-                errorElement.textContent = result.error.message;
-              } else {
-                console.log(result);
-                
-                this.data = result;
-                
-              }
-            });*/
         });
     }
 
@@ -312,7 +293,7 @@ export class CartPage {
     }
 
     pay() {
-        var test = this.cardDetails;
+        //var test = this.cardDetails;
 
         //place order in db
         //generate reference
@@ -338,25 +319,18 @@ export class CartPage {
             var timestamp = this.dateToTimestamp(new Date().toString());
             this.order.createdDate = timestamp;
             newOrder.set(this.order, done => {
-                //make payment
-                this.updateOrderCount(this.order.orderNumber);
-                var headers = new Headers();
-                headers.append("Accept", 'application/json');
-                headers.append('Content-Type', 'application/x-www-form-urlencoded');
-                let options = new RequestOptions({ headers: headers });
-
-                var notification =
-                    JSON.stringify({
-                        number: this.user.cellPhone,
-                        reference: this.order.reference
-                    });
-
-                this.cardDetails.quantity = this.order.quantity;
-
-                this.http.post('http://laravel.site:7000/api/cardPaymenttest', JSON.stringify(this.cardDetails), options)
-                    .subscribe(data => {
-                        var breakeHere = "";
-                    });
+                let url = "http://teraspayment.epizy.com/index.php?payGateID=" + 1025357100018 + "&amount=" + this.priceTotal + "&email=" + this.user.email + "&reference=" + this.order.reference;
+                const optionss: InAppBrowserOptions = {
+                    zoom: 'no',
+                    location:'yes',
+                    toolbar:'yes',
+                    clearcache: 'yes',
+                    clearsessioncache: 'yes',
+                    disallowoverscroll: 'yes',
+                    enableViewportScale: 'yes'
+                } 
+                const browser = this.inAppBrowser.create(url, '_self', optionss); 
+                browser.show();
             });
         });
     }
@@ -423,7 +397,7 @@ export class CartPage {
                             reference: this.order.reference
                         });
 
-                    this.http.post('http://localhost/api/sms/send', notification, options)
+                    this.http.post('http://terasherbaljuice.dedicated.co.za/api/sms/send', notification, options)
                         .subscribe(data => {
                             var breakeHere = "";
                         });
@@ -454,8 +428,7 @@ export class CartPage {
 
         }
         else if (this.order.paymentMethod == 'Card') {
-            this.showPaymentForm = true;   
-            this.showSpinner = false;         
+           this.pay();              
         }
         /* else if (this.order.paymentMethod == 'Points') {
  
