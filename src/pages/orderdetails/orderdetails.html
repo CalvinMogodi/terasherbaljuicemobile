@@ -51,7 +51,7 @@
   </div>
 </div>
 <ion-card style="border-radius: 15px;margin-top: 17%;" padding>  
-  <button *ngIf="!order.uploadedPOP" (click)="openFileChooser()" ion-button full round style="background-color: #ffcc00;">Upload Proof of Payment</button>
+  <button *ngIf="!order.uploadedPOP && order.paymentMethod != 'Card'" (click)="openFileChooser()" ion-button full round style="background-color: #ffcc00;">Upload Proof of Payment</button>
   <ion-item>
     <h2>Order # {{order.orderNumber}}</h2>
     <p>Order Date: {{dateStr}}</p>
@@ -61,7 +61,9 @@
        <label *ngIf="order.deliveryAddress != ''"> Delivery Address: {{order.deliveryAddress}}<br></label>
         Payment Method: {{order.paymentMethod}}<br>
         Payment Reference: {{order.reference}}<br>
-        status: {{order.status}}<br>
+        Status: {{order.status}}<br>
+        <label *ngIf="order.waybillNumber != 0"> Waybill Number: {{order.waybillNumber}}<br></label>
+        
     </p>
   </ion-card-content>
 

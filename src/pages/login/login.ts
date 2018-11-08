@@ -114,7 +114,8 @@ export class LoginPage {
                  this.loader.dismiss();
                  this.navCtrl.setRoot(UploadPage, {
                       userData: authData.user.uid,
-                      paymentReference: this.dbUser.paymentReference
+                      paymentReference: this.dbUser.paymentReference,
+                      userEmail: this.dbUser.email
                   });                
               }
             }     

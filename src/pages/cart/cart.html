@@ -25,8 +25,9 @@
             <ion-list>
                 <ion-item>
                   <ion-label floating>Quantity</ion-label>
-                  <ion-input [(ngModel)]="order.quantity" (ngModelChange)="calculateTotal($event)" type="number"></ion-input>
+                  <ion-input [attr.min]="3" [(ngModel)]="order.quantity" min="3" (ngModelChange)="calculateTotal($event)" type="number"></ion-input>
                 </ion-item>
+                <small *ngIf="quantityError" style="color: red;font-size: small;margin-left: 20px;"> You can not buy less than 3 bottle. </small>
                 <ion-item>
                     <ion-label>Payment Method</ion-label>
                       <ion-select [(ngModel)]="order.paymentMethod">

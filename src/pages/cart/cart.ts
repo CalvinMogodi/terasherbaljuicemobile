@@ -27,6 +27,7 @@ export class CartPage {
     //tco = TCO.loadPubKey('sandbox');
     showDeliveryMethodError = false;
     showPaymentMethodError = false;
+    quantityError = false
     card: any;
     checkoutCard =
         {
@@ -57,7 +58,7 @@ export class CartPage {
         deliveryMethod: '',
         deliveryAddress: '',
         paymentMethod: '',
-        quantity: 1,
+        quantity: 3,
         status: 'Pending Payment',
         userId: '',
         monthId: new Date().getMonth() + 1,
@@ -105,60 +106,14 @@ export class CartPage {
         this.userId = navParams.get('userData5');
         this.price = navParams.get('price');
         this.database = db.database;
-        this.priceTotal = (1 * this.price).toFixed(2);
-        /* var today = new Date();
-         var dd = today.getDate();
-         var mm = today.getMonth() + 1; //January is 0!
-         var yyyy = today.getFullYear();
-         var date = dd + '-' + mm + '-' + yyyy;
- 
-         //this.order.createdDate = date;
- 
-         var startSearchString = '1-';
-         startSearchString = startSearchString + today.getMonth() + 1 + '-';
-         startSearchString = startSearchString + today.getFullYear();
- 
-         var endSearchString = "31-";
-         endSearchString = endSearchString + today.getMonth() + 1 + '-';
-         endSearchString = endSearchString + today.getFullYear();
- 
-         this.database.ref().child('orders').orderByChild('monthId')
-             .equalTo(today.getMonth() + 1).once('value', (snapshot) => {
-                 snapshot.forEach(snap => {
-                     var order = snap.val()
-                     order.createdDate = this.timeConverter(order.createdDate);
-                     let date = new Date(this.timeConverter(order.createdDate));
-                     let monthId = date.getMonth;
-                     if (order.userId == this.userId
-                         && order.createdDate.substring(4, order.createdDate.length - 1)) {
-                         this.unitsBoughtThisMonth += Number(order.quantity);
-                     }
-                 });
- 
-                 if (this.unitsBoughtThisMonth >= 5)
-                     this.paymentMethods.push("Points");
-             });*/
-
+        this.priceTotal = (3 * this.price).toFixed(2);
         this.db.database.ref().child('users/' + this.userId).once('value', (snapshot) => {
             this.user = snapshot.val();
         });
-
-        //get orders placed this month
-        /*this.database.ref('orders').orderByChild('createdDate')
-                     .startAt(startSearchString).endAt(endSearchString)
-                     .once('value', (snapshot)=>
-                     {
-                        snapshot.forEach(snap =>
-                        {
-                            var test = snap.val()
-                            //this.unitsBoughtThisMonth += snap.val().quantity;
-                        });
-                    });*/
     }
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad CartPage');
-        //this.setupStripe();
     }
 
     timeConverter(timestamp) {
@@ -375,6 +330,12 @@ export class CartPage {
 
 
     placeOrder() {
+        this.quantityError = false
+        if(this.order.quantity < 3)
+        {
+            this.quantityError = true
+            return
+        }
 
         this.showDeliveryMethodError = false;
         this.showPaymentMethodError = false;

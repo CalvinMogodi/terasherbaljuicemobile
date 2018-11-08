@@ -7,6 +7,7 @@ import { IOSFilePicker } from '@ionic-native/file-picker';
 import { LoginPage } from '../login/login';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { InAppBrowser, InAppBrowserOptions } from "@ionic-native/in-app-browser";
 
 /**
  * Generated class for the UploadPage page.
@@ -24,9 +25,11 @@ export class UploadPage {
   uid: any;
   paymentReference: any;
   loader: any;
-  constructor(public afStorage: AngularFireStorage, public db: AngularFireDatabase, public platform: Platform, private fileChooser: FileChooser, private filePath: FilePath, public iosFilePicker: IOSFilePicker, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController,public toast: ToastController) {
+  userEmail = 'terasjuicesa@gmail.com	';
+  constructor(private inAppBrowser: InAppBrowser, public afStorage: AngularFireStorage, public db: AngularFireDatabase, public platform: Platform, private fileChooser: FileChooser, private filePath: FilePath, public iosFilePicker: IOSFilePicker, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController,public toast: ToastController) {
     this.uid = navParams.get('userData');
     this.paymentReference = navParams.get('paymentReference');
+    this.userEmail = navParams.get('userEmail');
   }
 
   uploadDocument() {    
@@ -36,6 +39,23 @@ export class UploadPage {
     else if (this.platform.is('android')) {
       this.pickFileFromAndroidDevice();
     }
+  }
+  cardPayment(){
+    let url = "http://teraspayment.epizy.com/index.php?payGateID=" + 1025357100018 + "&amount=" + 1570 + "&email=" + this.userEmail + "&reference=" + this.paymentReference;
+    const optionss: InAppBrowserOptions = {
+        zoom: 'no',
+        clearcache: 'yes',
+        clearsessioncache: 'yes',
+        disallowoverscroll: 'yes',
+        enableViewportScale: 'yes',
+    }
+    const browser = this.inAppBrowser.create(url, '_self', optionss);
+    browser.show();
+    browser.on('exit').subscribe(event => {
+      var updates = {};
+      updates['users/' + this.uid + '/uploadedPOP'] = true;
+      this.db.database.ref().update(updates);
+    });
   }
 
   ionViewDidLoad() {
