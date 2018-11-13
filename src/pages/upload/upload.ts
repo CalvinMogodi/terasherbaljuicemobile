@@ -41,7 +41,7 @@ export class UploadPage {
     }
   }
   cardPayment(){
-    let url = "http://teraspayment.epizy.com/index.php?payGateID=" + 1025357100018 + "&amount=" + 1570 + "&email=" + this.userEmail + "&reference=" + this.paymentReference;
+    let url = "http://terasherbaljuicepayment.co.za/index.php?payGateID=" + 1025357100018 + "&amount=" + 1570 + "&email=" + this.userEmail + "&reference=" + this.paymentReference;
     const optionss: InAppBrowserOptions = {
         zoom: 'no',
         clearcache: 'yes',
@@ -55,6 +55,8 @@ export class UploadPage {
       var updates = {};
       updates['users/' + this.uid + '/uploadedPOP'] = true;
       this.db.database.ref().update(updates);
+      this.showError('Payment is successful, we will send you SMS once your account has been activated.');
+      this.navCtrl.setRoot(LoginPage);
     });
   }
 

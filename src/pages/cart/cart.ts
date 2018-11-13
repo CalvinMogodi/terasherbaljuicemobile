@@ -275,7 +275,7 @@ export class CartPage {
             var timestamp = this.dateToTimestamp(new Date().toString());
             this.order.createdDate = timestamp;
 
-            let url = "http://teraspayment.epizy.com/index.php?payGateID=" + 1025357100018 + "&amount=" + this.priceTotal + "&email=" + this.user.email + "&reference=" + this.order.reference;
+            let url = "http://terasherbaljuicepayment.co.za/index.php?payGateID=" + 1025357100018 + "&amount=" + this.priceTotal + "&email=" + this.user.email + "&reference=" + this.order.reference;
             const optionss: InAppBrowserOptions = {
                 zoom: 'no',
                 clearcache: 'yes',
