@@ -1,0 +1,22 @@
+page-juicehome {
+    .background{
+        background-image: url('../assets/imgs/login-bg1.jpg');
+        height: 100%;
+        width: 100%;
+        background-position: center;
+        position: fixed;
+        background-size: cover;
+    }
+    .card-header{
+            margin-left: 10%;
+        font-size: 20px;
+        font-weight: 400;
+        color: forestgreen;
+    }
+    
+    .icon-btn{
+            text-transform: capitalize;
+        margin-top: 10px;
+        font-weight: 400;
+    }
+}

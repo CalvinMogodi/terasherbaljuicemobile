@@ -1,0 +1,67 @@
+page-juicebenefits {
+    .background{
+        background-image: url('../assets/imgs/login-bg1.jpg');
+        height: 100%;
+        width: 100%;
+        background-position: center;
+        position: fixed;
+        background-size: cover;
+    }
+    .card-header{
+            margin-left: 10%;
+        font-size: 20px;
+        font-weight: 400;
+        color: forestgreen;
+    }
+    
+    .icon-btn{
+            text-transform: capitalize;
+        margin-top: 10px;
+        font-weight: 400;
+    }
+
+    .section-title {
+        margin-bottom: 50px;
+        text-align: center;
+        color: darkgreen;
+    }
+
+    .row {
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+
+    .section-title h2 {
+        font-size: 30px;
+        font-weight: 500;
+        color: darkgreen;
+        letter-spacing: 0.01em;
+        margin-bottom: 11px;
+    }
+
+    .section-title p {
+        color: darkgreen;
+    }
+
+    .text-right {
+        text-align: center;
+    }
+
+    .feature-item {
+        position: relative;
+        padding-top: 40px;
+        z-index: 7;
+        margin-top: 27px;
+    }
+
+    .feature-item h4 {
+        font-size: 18px;
+        font-weight: 500;
+        color: darkgreen;
+        letter-spacing: 0;
+    }
+
+    .feature-item p {
+        color: darkgreen;
+    }
+}

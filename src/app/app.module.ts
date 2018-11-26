@@ -26,10 +26,16 @@ import { ProfilePage } from '../pages/profile/profile';
 import { AwaitingApprovalPage } from '../pages/awaitingapproval/awaitingapproval';
 import { CardpaymentPage } from '../pages/cardpayment/cardpayment';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AboutappPage } from '../pages/aboutapp/aboutapp';
+import { ContactusPage } from '../pages/contactus/contactus';
+import { HowtousejuicePage } from '../pages/howtousejuice/howtousejuice';
+import { JuicebenefitsPage } from '../pages/juicebenefits/juicebenefits';
+import { JuicehomePage } from '../pages/juicehome/juicehome';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
+import { HTTP } from '@ionic-native/http';
+import { HttpClientModule } from '@angular/common/http'
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireStorageModule } from 'angularfire2/storage';
@@ -63,11 +69,17 @@ var config = {
     AwaitingApprovalPage,
     OrderhistoryPage,
     OrderdetailsPage,
-    CardpaymentPage
+    CardpaymentPage,
+    AboutappPage,
+    ContactusPage,
+    HowtousejuicePage,
+    JuicebenefitsPage,
+    JuicehomePage
   ],
   imports: [
     BrowserModule,
     HttpModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(config),
     AngularFireDatabaseModule,
@@ -95,11 +107,17 @@ var config = {
     AwaitingApprovalPage,
     OrderhistoryPage,
     OrderdetailsPage,
-    CardpaymentPage
+    CardpaymentPage,
+    AboutappPage,
+    ContactusPage,
+    HowtousejuicePage,
+    JuicebenefitsPage,
+    JuicehomePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    HTTP,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UserserviceProvider,
     FileTransfer,

@@ -4,11 +4,16 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
+import { JuicehomePage } from '../pages/juicehome/juicehome';
 import { ProfilePage } from '../pages/profile/profile';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireStorage } from 'angularfire2/storage';
+import { HowtousejuicePage } from '../pages/howtousejuice/howtousejuice';
+import { JuicebenefitsPage } from '../pages/juicebenefits/juicebenefits';
+import { AboutappPage } from '../pages/aboutapp/aboutapp';
+import { ContactusPage } from '../pages/contactus/contactus';
 
 @Component({
   templateUrl: 'app.html'
@@ -16,12 +21,14 @@ import { AngularFireStorage } from 'angularfire2/storage';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   profilePicURL = 'assets/imgs/profile.png';
-  rootPage: any = LoginPage;
+  rootPage: any = JuicehomePage;
   public displayname = 'Name Surname';
+  public userIsLoggedIn = false;
   id: any;
   userId: any;
   public database: any;
-  pages: Array<{ title: string, component: any, icon: string, isActive: boolean }>;
+  public pages: Array<{ title: string, component: any, icon: string, isActive: boolean }>;
+  public anonymouspages: Array<{ title: string, component: any, icon: string, isActive: boolean }>;
 
   constructor(public afStorage: AngularFireStorage, public afAuth: AngularFireAuth, public db: AngularFireDatabase, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public events: Events) {
     events.subscribe("gotId", (uid) => {
@@ -29,14 +36,15 @@ export class MyApp {
 
     });
     this.initializeApp();
-
+    this.userIsLoggedIn = false;
     var that = this;
     this.database = db;
     afAuth.auth.onAuthStateChanged(user => {
       if (user) {
+        this.userIsLoggedIn = true;
         this.userId = user.uid;
         this.db.database.ref().child('users/' + user.uid).once('value', (snapshot) => {
-          var user = snapshot.val();
+          var user = snapshot.val();          
           if (user != null) {
             if (user.isActive) {
               user.uid = snapshot.key;
@@ -56,16 +64,28 @@ export class MyApp {
 
       }
       else {
-        that.rootPage = LoginPage;
-        this.nav.setRoot(LoginPage);
+        that.rootPage = JuicehomePage;
+        this.nav.setRoot(JuicehomePage);
       }
     })
-    that.rootPage = LoginPage;
+    that.rootPage = JuicehomePage;
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage, icon: 'home', isActive: false },
       { title: 'Profile', component: ProfilePage, icon: 'person', isActive: true },
+      { title: 'How to use Teras Herbal Juice', component: HowtousejuicePage, icon: 'lock', isActive: false },
+      { title: 'Teras Juice Benefits', component: JuicebenefitsPage, icon: 'lock', isActive: false },
+      { title: 'About', component: AboutappPage, icon: 'person', isActive: true },
+      { title: 'Contact Us', component: ContactusPage, icon: 'lock', isActive: false },
       { title: 'Log Out', component: LoginPage, icon: 'lock', isActive: false },
+    ];
+
+    this.anonymouspages = [
+      { title: 'Home', component: JuicehomePage, icon: 'home', isActive: false },     
+      { title: 'How to use Teras Herbal Juice', component: HowtousejuicePage, icon: 'lock', isActive: false },
+      { title: 'Teras Juice Benefits', component: JuicebenefitsPage, icon: 'lock', isActive: false },
+      { title: 'About', component: AboutappPage, icon: 'person', isActive: true },
+      { title: 'Contact Us', component: ContactusPage, icon: 'lock', isActive: false },
     ];
 
   }
@@ -80,16 +100,24 @@ export class MyApp {
   }
 
   openPage(page) {
-    if (page.title == 'Profile') {
-      this.nav.push(page.component, {
+
+    if (page.title == 'Log Out') {
+      this.nav.setRoot(page.component, {
         profileId: this.userId
       });
-    } else {
+    }
+    else if(page.title == 'Log Out') {
       if (page.title == 'Log Out') {
         this.afAuth.auth.signOut();
       }
+    }
+    else if(page.title == 'Home'){
       this.nav.setRoot(page.component, {
         userData: this.userId
+      });
+    }else{
+      this.nav.push(page.component, {
+        profileId: this.userId
       });
     }
 

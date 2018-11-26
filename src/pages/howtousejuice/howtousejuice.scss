@@ -1,0 +1,57 @@
+page-howtousejuice {
+    .background{
+        background-image: url('../assets/imgs/login-bg1.jpg');
+        height: 100%;
+        width: 100%;
+        background-position: center;
+        position: fixed;
+        background-size: cover;
+    }
+    .card-header{
+            margin-left: 10%;
+        font-size: 20px;
+        font-weight: 400;
+        color: forestgreen;
+    }
+    
+    .icon-btn{
+            text-transform: capitalize;
+        margin-top: 10px;
+        font-weight: 400;
+    }
+
+    .ft-single {
+        overflow: hidden;
+        margin-top: 34px;
+    }
+
+    .ft-single .icon {
+        float: left;
+        margin-right: 23px;
+        height: 70px;
+        width: 70px;
+        border: 1px solid #ff5700;
+        color: #ff5700;
+        text-align: center;
+        line-height: 70px;
+        border-radius: 50%;
+        font-size: 22px;
+    }
+    .ft-single .ft-info {
+        overflow: hidden;
+    }
+
+    .ft-single .ft-info h4 {
+        font-size: 18px;
+        font-weight: 500;
+        color: darkgreen;
+        letter-spacing: 0;
+        margin-bottom: 10px;
+    }
+
+    .about-content p {
+        color: darkgreen;
+    }
+    
+
+}
