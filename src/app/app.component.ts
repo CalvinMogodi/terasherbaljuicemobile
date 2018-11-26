@@ -73,19 +73,19 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: HomePage, icon: 'home', isActive: false },
       { title: 'Profile', component: ProfilePage, icon: 'person', isActive: true },
-      { title: 'How to use Teras Herbal Juice', component: HowtousejuicePage, icon: 'lock', isActive: false },
-      { title: 'Teras Juice Benefits', component: JuicebenefitsPage, icon: 'lock', isActive: false },
-      { title: 'About', component: AboutappPage, icon: 'person', isActive: true },
-      { title: 'Contact Us', component: ContactusPage, icon: 'lock', isActive: false },
+      { title: 'How to use Teras Herbal Juice', component: HowtousejuicePage, icon: 'color-fill', isActive: false },
+      { title: 'Teras Juice Benefits', component: JuicebenefitsPage, icon: 'man', isActive: false },
+      { title: 'About', component: AboutappPage, icon: 'people', isActive: true },
+      { title: 'Contact Us', component: ContactusPage, icon: 'contacts', isActive: false },
       { title: 'Log Out', component: LoginPage, icon: 'lock', isActive: false },
     ];
 
     this.anonymouspages = [
       { title: 'Home', component: JuicehomePage, icon: 'home', isActive: false },     
-      { title: 'How to use Teras Herbal Juice', component: HowtousejuicePage, icon: 'lock', isActive: false },
-      { title: 'Teras Juice Benefits', component: JuicebenefitsPage, icon: 'lock', isActive: false },
-      { title: 'About', component: AboutappPage, icon: 'person', isActive: true },
-      { title: 'Contact Us', component: ContactusPage, icon: 'lock', isActive: false },
+      { title: 'How to use Teras Herbal Juice', component: HowtousejuicePage, icon: 'color-fill', isActive: false },
+      { title: 'Teras Juice Benefits', component: JuicebenefitsPage, icon: 'man', isActive: false },
+      { title: 'About', component: AboutappPage, icon: 'people', isActive: true },
+      { title: 'Contact Us', component: ContactusPage, icon: 'contacts', isActive: false },
     ];
 
   }

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Headers, RequestOptions } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 /**
  * Generated class for the ContactusPage page.
@@ -27,7 +27,7 @@ export class ContactusPage {
     emailAddress: '',
   };
 
-  constructor(public formBuilder: FormBuilder, public http: HttpClient,public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public loadingCtrl: LoadingController) {
+  constructor(public formBuilder: FormBuilder, public http: Http, public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public loadingCtrl: LoadingController) {
     this.contactUsForm = formBuilder.group({
       message: ['', Validators.compose([Validators.required])],
       fullName: ['', Validators.compose([Validators.required])],
@@ -40,22 +40,29 @@ export class ContactusPage {
     console.log('ionViewDidLoad ContactusPage');
   }
 
-  send(){
+  send() {
     this.submitAttempt = true;
 
-    if(this.contactUsForm.valid){
-       var loader = this.loadingCtrl.create({
+    if (this.contactUsForm.valid) {
+      var loader = this.loadingCtrl.create({
         content: "Please wait..."
       });
 
       loader.present();
 
       var headers = new Headers();
-    headers.append("Accept", 'application/json');
-    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    let options = new RequestOptions({ headers: headers });
-    let proxyurl = "https://cors-anywhere.herokuapp.com/";
-      this.http.post(proxyurl + 'http://197.242/api/contactUs', this.message).subscribe(data => {
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/x-www-form-urlencoded');
+      let options = new RequestOptions({ headers: headers });
+      let message =
+        JSON.stringify({
+          message: this.message.message,
+          fullName: this.message.fullName,
+          subject: this.message.subject,
+          emailAddress: this.message.emailAddress,
+        });
+
+      this.http.post('http://terasherbaljuice.dedicated.co.za/api/contactus', message, options).subscribe(data => {
         if (data) {
           loader.dismiss();
           let toast = this.toastCtrl.create({
@@ -69,7 +76,7 @@ export class ContactusPage {
           this.showError = true;
         }
       });
-    }   
+    }
   }
 
 }
