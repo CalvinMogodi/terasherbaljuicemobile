@@ -26,6 +26,14 @@ export class UserserviceProvider {
     return this.fireAuth.signInWithEmailAndPassword(email, password);
   }
 
+  logoutUser(): any {
+    return this.fireAuth.signOut();
+  }
+
+  resetPassword(email: string): any {
+    return this.fireAuth.sendPasswordResetEmail(email);
+  }
+
   signUpUser(account: {}): any {
     return this.fireAuth.createUserWithEmailAndPassword(account['email'], account['password']).then((newUser) => {
       //

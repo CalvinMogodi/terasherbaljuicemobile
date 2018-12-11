@@ -14,9 +14,11 @@ import { HowtousejuicePage } from '../pages/howtousejuice/howtousejuice';
 import { JuicebenefitsPage } from '../pages/juicebenefits/juicebenefits';
 import { AboutappPage } from '../pages/aboutapp/aboutapp';
 import { ContactusPage } from '../pages/contactus/contactus';
+import { UserserviceProvider } from '../providers/userservice/userservice';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [UserserviceProvider]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
@@ -30,7 +32,7 @@ export class MyApp {
   public pages: Array<{ title: string, component: any, icon: string, isActive: boolean }>;
   public anonymouspages: Array<{ title: string, component: any, icon: string, isActive: boolean }>;
 
-  constructor(public afStorage: AngularFireStorage, public afAuth: AngularFireAuth, public db: AngularFireDatabase, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public events: Events) {
+  constructor(public afStorage: AngularFireStorage, public afAuth: AngularFireAuth, public userService: UserserviceProvider, public db: AngularFireDatabase, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public events: Events) {
     events.subscribe("gotId", (uid) => {
       this.id = uid;
 
@@ -44,7 +46,7 @@ export class MyApp {
         this.userIsLoggedIn = true;
         this.userId = user.uid;
         this.db.database.ref().child('users/' + user.uid).once('value', (snapshot) => {
-          var user = snapshot.val();          
+          var user = snapshot.val();
           if (user != null) {
             if (user.isActive) {
               user.uid = snapshot.key;
@@ -81,7 +83,7 @@ export class MyApp {
     ];
 
     this.anonymouspages = [
-      { title: 'Home', component: JuicehomePage, icon: 'home', isActive: false },     
+      { title: 'Home', component: JuicehomePage, icon: 'home', isActive: false },
       { title: 'How to use Teras Herbal Juice', component: HowtousejuicePage, icon: 'color-fill', isActive: false },
       { title: 'Teras Juice Benefits', component: JuicebenefitsPage, icon: 'man', isActive: false },
       { title: 'About', component: AboutappPage, icon: 'people', isActive: true },
@@ -100,22 +102,22 @@ export class MyApp {
   }
 
   openPage(page) {
-
-    if (page.title == 'Log Out') {
-      this.nav.setRoot(page.component, {
-        profileId: this.userId
-      });
-    }
-    else if(page.title == 'Log Out') {
+    
       if (page.title == 'Log Out') {
-        this.afAuth.auth.signOut();
+        this.userService.logoutUser()
+          .then((user) => {
+            window.location.reload();
+            this.nav.setRoot(JuicehomePage);
+          }, (error) => {
+            this.afAuth.auth.signOut();
+          });
+
       }
-    }
-    else if(page.title == 'Home'){
+    else if (page.title == 'Home') {
       this.nav.setRoot(page.component, {
         userData: this.userId
       });
-    }else{
+    } else {
       this.nav.push(page.component, {
         profileId: this.userId
       });
